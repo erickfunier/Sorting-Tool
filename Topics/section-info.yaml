@@ -3,3 +3,9 @@ content:
 - Generic methods
 - Type Bounds
 - Wildcards
+- Reification
+- Strategy
+- Retrieving Class instances
+- Unit testing with JUnit
+- Test lifecycle annotations
+- Manipulating fields and methods

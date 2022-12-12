@@ -1,0 +1,35 @@
+type: code
+files:
+- name: src/Main.java
+  visible: true
+  text: |-
+    import java.lang.reflect.Field;
+    /**
+     * Get value for a given public field or null if the field does not exist or is not accessible.
+     */
+    class FieldGetter {
+
+        public Object getFieldValue(Object object, String fieldName) throws IllegalAccessException {
+
+        }
+
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/2882#comment
+status: Failed
+feedback:
+  message: |
+    Failed. Wrong answer
+
+    This is a sample test from the problem statement!
+
+    Test input:
+    FieldGetter class
+
+    Correct output:
+    Well done!
+
+    Your code output:
+    Can not set int field Zero.a to java.lang.String
+  time: "Mon, 12 Dec 2022 09:37:32 UTC"
+record: -1

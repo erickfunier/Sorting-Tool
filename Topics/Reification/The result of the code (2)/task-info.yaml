@@ -1,0 +1,25 @@
+type: choice
+is_multiple_choice: false
+options:
+- text: Compile-time error "Cannot instantiate the type T"
+- text: Compiles and prints "Hello!"
+- text: Runtime error
+- text: Compile-time error "Cannot use the type parameter T in a catch block"
+- text: Compiles and prints "Error!"
+files:
+- name: src/Task.java
+  visible: true
+  text: |
+    // You can experiment here, it won’t be checked
+
+    public class Task {
+      public static void main(String[] args) {
+        // put your code here
+      }
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/2600#comment
+status: Solved
+record: -1
+custom_name: The result of the code
+local_check: false
