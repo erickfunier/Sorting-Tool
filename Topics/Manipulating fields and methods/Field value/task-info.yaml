@@ -16,20 +16,5 @@ files:
     }
   learner_created: false
 feedback_link: https://hyperskill.org/learn/step/2882#comment
-status: Failed
-feedback:
-  message: |
-    Failed. Wrong answer
-
-    This is a sample test from the problem statement!
-
-    Test input:
-    FieldGetter class
-
-    Correct output:
-    Well done!
-
-    Your code output:
-    Can not set int field Zero.a to java.lang.String
-  time: "Mon, 12 Dec 2022 09:37:32 UTC"
+status: Solved
 record: -1

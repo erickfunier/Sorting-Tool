@@ -3,56 +3,36 @@ package sorting;
 import java.util.*;
 
 public class Main {
-    public static void mergeSort(long[] a, int n) {
-        if (n < 2) {
-            return;
-        }
-        int mid = n / 2;
-        long[] l = new long[mid];
-        long[] r = new long[n - mid];
 
-        for (int i = 0; i < mid; i++) {
-            l[i] = a[i];
-        }
-        for (int i = mid; i < n; i++) {
-            r[i - mid] = a[i];
-        }
-        mergeSort(l, mid);
-        mergeSort(r, n - mid);
+    //Method for sorting the TreeMap based on values
+    public static <K, V extends Comparable<V>> Map<K, V>
+    sortByValues(final Map<K, V> map) {
+        Comparator<K> valueComparator =
+                (k1, k2) -> {
+                    int compare =
+                            map.get(k1).compareTo(map.get(k2));
+                    if (compare == 0)
+                        return 1;
+                    else
+                        return compare;
+                };
 
-        merge(a, l, r, mid, n - mid);
-    }
-
-    public static void merge(
-            long[] a, long[] l, long[] r, int left, int right) {
-
-        int i = 0, j = 0, k = 0;
-        while (i < left && j < right) {
-            if (l[i] <= r[j]) {
-                a[k++] = l[i++];
-            }
-            else {
-                a[k++] = r[j++];
-            }
-        }
-        while (i < left) {
-            a[k++] = l[i++];
-        }
-        while (j < right) {
-            a[k++] = r[j++];
-        }
+        Map<K, V> sortedByValues =
+                new TreeMap<K, V>(valueComparator);
+        sortedByValues.putAll(map);
+        return sortedByValues;
     }
 
     public static void main(final String[] args) {
         String dataType = "long";
-        boolean sort = false;
+        String sortingType = "natural";
 
         if (args.length > 0) {
             for (int i = 0; i < args.length; i++) {
                 if (args[i].equals("-dataType"))
                     dataType = args[i + 1];
-                if (args[i].equals("-sortIntegers")) {
-                    sort = true;
+                if (args[i].equals("-sortingType")) {
+                    sortingType = args[i + 1];
                 }
             }
         }
@@ -61,123 +41,113 @@ public class Main {
 
         switch (dataType) {
             case "long" -> {
-                if (sort) {
-                    ArrayList<Long> nums = new ArrayList<>();
-                    while (scanner.hasNextLong()) {
-                        nums.add(scanner.nextLong());
-                    }
-                    System.out.println("Total numbers: " + nums.size() + ".");
+                List<Long> nums = new ArrayList<>();
+                while (scanner.hasNextLong()) {
+                    nums.add(scanner.nextLong());
+                }
+                System.out.println("Total numbers: " + nums.size() + ".");
+                Collections.sort(nums);
 
-                    long[] numsLong = new long[nums.size()];
-                    int index = 0;
-                    for (Long num : nums)
-                        numsLong[index++] = num;
-
-                    mergeSort(numsLong, nums.size());
-
+                if (sortingType.equals("natural")) {
                     System.out.print("Sorted data:");
-                    for (Long num : numsLong)
+                    for (Long num : nums)
                         System.out.printf(" %d", num);
 
                 } else {
-                    long numCount = 0;
-                    long greatest = Long.MIN_VALUE;
-                    long occurs = 0;
-                    while (scanner.hasNextLong()) {
-                        long number = scanner.nextLong();
+                    TreeMap<Integer, Long> frequencies = new TreeMap<>();
 
-                        if (number > greatest) {
-                            greatest = number;
-                            occurs = 1;
-                        } else if (number == greatest)
-                            occurs++;
-
-                        numCount++;
+                    int i = 0;
+                    for (long temp : nums.stream().distinct().toList()) {
+                        long freq = Math.round(((double) nums.stream().filter(n -> n == temp).count() / nums.size()) * 100);
+                        frequencies.put(i, freq);
+                        i++;
                     }
-                    long percent = Math.round(((double) occurs / numCount) * 100);
-                    System.out.println("Total numbers: " + numCount + ".");
-                    System.out.println("The greatest number: " + greatest + " (" + occurs + " time(s), " + percent + "%).");
+
+                    Map<Integer, Long> sortedMap = sortByValues(frequencies);
+                    Set<Map.Entry<Integer, Long>> set = sortedMap.entrySet();
+
+                    for (Map.Entry<Integer, Long> integerLongEntry : set) {
+                        List<Long> dist = nums.stream().distinct().toList();
+                        long temp = dist.get(integerLongEntry.getKey());
+                        long freq = integerLongEntry.getValue();
+                        long occurs = nums.stream().filter(n -> n == temp).count();
+
+                        System.out.println(temp + ": " + occurs + " time(s), " + freq + "%");
+                    }
                 }
             }
             case "line" -> {
-                if (sort) {
-                    ArrayList<Long> nums = new ArrayList<>();
-                    while (scanner.hasNext()) {
-                        nums.add(Long.valueOf(scanner.nextLine()));
-                    }
-                    System.out.println("Total numbers: " + nums.size() + ".");
+                List<String> lines = new ArrayList<>();
+                while (scanner.hasNextLine()) {
+                    lines.add(scanner.nextLine());
+                }
+                System.out.println("Total lines: " + lines.size() + ".");
+                Collections.sort(lines);
 
-                    long[] numsLong = new long[nums.size()];
-                    int index = 0;
-                    for (Long num : nums)
-                        numsLong[index++] = num;
-
-                    mergeSort(numsLong, nums.size());
-
+                if (sortingType.equals("natural")) {
                     System.out.print("Sorted data:");
-                    for (Long num : numsLong)
-                        System.out.printf(" %d", num);
+                    for (String line : lines)
+                        System.out.printf(" %s", line);
 
                 } else {
-                    long lineCount = 0;
-                    String longestLine = "";
-                    long occurs = 0;
-                    while (scanner.hasNext()) {
-                        String line = scanner.nextLine();
+                    TreeMap<Integer, Long> frequencies = new TreeMap<>();
 
-                        if (line.length() > longestLine.length()) {
-                            longestLine = line;
-                            occurs = 1;
-                        } else if (line.length() == longestLine.length())
-                            occurs++;
-
-                        lineCount++;
+                    int i = 0;
+                    for (String temp : lines.stream().distinct().toList()) {
+                        long freq = Math.round(((double) lines.stream().filter(n -> Objects.equals(n, temp)).count() / lines.size()) * 100);
+                        frequencies.put(i, freq);
+                        i++;
                     }
-                    long percent = Math.round(((double) occurs / lineCount) * 100);
-                    System.out.println("Total lines: " + lineCount + ".");
-                    System.out.println("The longest line: \n" + longestLine + "\n (" + occurs + " time(s), " + percent + "%).");
+
+                    Map<Integer, Long> sortedMap = sortByValues(frequencies);
+                    Set<Map.Entry<Integer, Long>> set = sortedMap.entrySet();
+
+                    for (Map.Entry<Integer, Long> integerLongEntry : set) {
+                        List<String> dist = lines.stream().distinct().toList();
+                        String temp = dist.get(integerLongEntry.getKey());
+                        long freq = integerLongEntry.getValue();
+                        long occurs = lines.stream().filter(n -> Objects.equals(n, temp)).count();
+
+                        System.out.println(temp + ": " + occurs + " time(s), " + freq + "%");
+                    }
                 }
             }
             case "word" -> {
-                if (sort) {
-                    ArrayList<Long> nums = new ArrayList<>();
-                    while (scanner.hasNext()) {
-                        nums.add(Long.valueOf(scanner.next()));
-                    }
-                    System.out.println("Total numbers: " + nums.size() + ".");
+                List<String> words = new ArrayList<>();
+                while (scanner.hasNext()) {
+                    words.add(scanner.next());
+                }
+                System.out.println("Total words: " + words.size() + ".");
+                Collections.sort(words);
 
-                    long[] numsLong = new long[nums.size()];
-                    int index = 0;
-                    for (Long num : nums)
-                        numsLong[index++] = num;
-
-                    mergeSort(numsLong, nums.size());
-
+                if (sortingType.equals("natural")) {
                     System.out.print("Sorted data:");
-                    for (Long num : numsLong)
-                        System.out.printf(" %d", num);
+                    for (String word : words)
+                        System.out.printf(" %s", word);
 
                 } else {
-                    long wordCount = 0;
-                    String longestWord = "";
-                    long occurs = 0;
-                    while (scanner.hasNext()) {
-                        String word = scanner.next();
+                    TreeMap<Integer, Long> frequencies = new TreeMap<>();
 
-                        if (word.length() > longestWord.length()) {
-                            longestWord = word;
-                            occurs = 1;
-                        } else if (word.length() == longestWord.length())
-                            occurs++;
-
-                        wordCount++;
+                    int i = 0;
+                    for (String temp : words.stream().distinct().toList()) {
+                        long freq = Math.round(((double) words.stream().filter(n -> Objects.equals(n, temp)).count() / words.size()) * 100);
+                        frequencies.put(i, freq);
+                        i++;
                     }
-                    long percent = Math.round(((double) occurs / wordCount) * 100);
-                    System.out.println("Total words: " + wordCount + ".");
-                    System.out.println("The longest word: " + longestWord + " (" + occurs + " time(s), " + percent + "%).");
+
+                    Map<Integer, Long> sortedMap = sortByValues(frequencies);
+                    Set<Map.Entry<Integer, Long>> set = sortedMap.entrySet();
+
+                    for (Map.Entry<Integer, Long> integerLongEntry : set) {
+                        List<String> dist = words.stream().distinct().toList();
+                        String temp = dist.get(integerLongEntry.getKey());
+                        long freq = integerLongEntry.getValue();
+                        long occurs = words.stream().filter(n -> Objects.equals(n, temp)).count();
+
+                        System.out.println(temp + ": " + occurs + " time(s), " + freq + "%");
+                    }
                 }
             }
         }
-
     }
 }

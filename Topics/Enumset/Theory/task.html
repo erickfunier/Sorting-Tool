@@ -1,5 +1,5 @@
 <h2>Enumset</h2>
-<html><body><p><strong>EnumSet</strong> is a specialized implementation of the <code class="language-java">Set</code> interface that extends <strong>AbstractSet</strong> and is used with enum types in Java. If you are planning to use enums then, EnumSet is the right choice. You can see the hierarchy of this class in the following diagram:</p>
+<p><strong>EnumSet</strong> is a specialized implementation of the <code class="language-java">Set</code> interface that extends <strong>AbstractSet</strong> and is used with enum types in Java. If you are planning to use enums then, EnumSet is the right choice. You can see the hierarchy of this class in the following diagram:</p>
 <p style="text-align: center;"><img alt="" height="439" src="https://ucarecdn.com/2e7a53a0-3024-41af-9bbb-43fee3acba9c/" width="395"/></p>
 <ol>
 </ol>
@@ -20,7 +20,7 @@
 </li>
 </ul>
 <p>If we want a new box of the same dimensions with a different identity (in other words, an EnumSet of the same type ) with certain color constants, we should use the <code class="language-java">of()</code> method and pass the required enums as an argument. We can pass any number of arguments.</p>
-<p>Notice how the <code class="language-java">of()</code> method creates a new box of the same dimension (that is, the same type) but with a different identity (because a box with a green lid is an enum class and the box with a blue lid is an EnumSet).</p>
+<p>Notice how the <code class="language-java">of()</code> method creates a new box of the same dimension (that is, the same type) but with a different identity (because a box with a blue lid is an enum class and the box with a dark blue lid is an EnumSet).</p>
 <p style="text-align: center;"><img alt="" height="139" src="https://ucarecdn.com/59e5e584-f54b-4b56-b703-23203fce4881/" width="469"/></p>
 <p>This is what it looks like syntactically:</p>
 <pre><code class="language-java">EnumSet&lt;BallsColor&gt; colors2 = EnumSet.of(BallsColor.GREEN,BallsColor.BLUE);
@@ -116,4 +116,4 @@ statuses.contains(Status.PROCESSING); // true
 </li>
 </ol>
 <h5 id="conclusion">Conclusion</h5>
-<p>As a rule of thumb, if you want to use a set of enums, EnumSet should be your first choice unless stated otherwise. The internal implementation uses bit arithmetic which is very compact and efficient with enums. The <code class="language-java">EnumSet</code> class has been divided into two package-private classes depending on the number of enums passed. EnumSet provides static factory methods to interact with it. We can create an immutable EnumSet by wrapping it with Collections.unmodifiableSet at the cost of performance. As always you can find out more about EnumSet in the documentation <a href="https://docs.oracle.com/javase/8/docs/api/java/util/EnumSet.html?msclkid=c9f10891bcdc11ec855e36530e3de813" rel="noopener noreferrer nofollow" target="_blank">here</a>.</p></body></html>
+<p>As a rule of thumb, if you want to use a set of enums, EnumSet should be your first choice unless stated otherwise. The internal implementation uses bit arithmetic which is very compact and efficient with enums. The <code class="language-java">EnumSet</code> class has been divided into two package-private classes depending on the number of enums passed. EnumSet provides static factory methods to interact with it. We can create an immutable EnumSet by wrapping it with Collections.unmodifiableSet at the cost of performance. As always you can find out more about EnumSet in the documentation <a href="https://docs.oracle.com/javase/8/docs/api/java/util/EnumSet.html?msclkid=c9f10891bcdc11ec855e36530e3de813" rel="noopener noreferrer nofollow" target="_blank">here</a>.</p>
