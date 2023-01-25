@@ -1,5 +1,5 @@
 <h2>Wildcards</h2>
-<html><body><p>Earlier, when we were discussing type bounds, we mentioned <em>Wildcards</em> as a feature that serves a similar purpose and has wide application.</p>
+<p>Earlier, when we were discussing type bounds, we mentioned <em>Wildcards</em> as a feature that serves a similar purpose and has wide application.</p>
 <p>Wildcards are a specific Java tool that allows the implementation of some compatibility between different generic objects. In essence, the wildcard is the "<strong>?"</strong> sign, used to indicate that a class, method, or field is compatible with different type parameters.</p>
 <h5 id="why-wildcards">Why Wildcards?</h5>
 <p>As an object-oriented language, Java relies on the concept of inheritance. But since generics are type-safe structures, it is impossible to introduce inheritance for generic objects.</p>
@@ -84,7 +84,7 @@ public void lowerBoundedMethod(List&lt;? super Album&gt; albums) {
     albums.add(new Album());  // OK
     albums.add(null);         // OK, null is type-independent
 }</code></pre>
-<p>Similarly to upper-bounded wildcards, certain actions involving lower-bounded wildcards lead to compile-time errors. Since any of <code class="language-java">List&lt;Album&gt;</code>, <code class="language-java">List&lt;Book&gt;</code>, <code class="language-java">List&lt;Object&gt;</code> can be passed to <code class="language-java">lowerBoundedMethod</code>, we can't assert that the object being read has type <code class="language-java">Album</code> or <code class="language-java">Book</code>. We can only be certain that it has type <code class="language-java">Object</code>, since all classes inherit from <code class="language-java">Object</code>.</p>
+<p>Similarly to upper-bounded wildcards, certain actions involving lower-bounded wildcards lead to compile-time errors. Since any of <code class="language-java">List&lt;Album&gt;</code>, <code class="language-java">List&lt;Book&gt;</code>, <code class="language-java">List&lt;Object&gt;</code> can be passed to <code class="language-java">lowerBoundedMethod</code>, we can't assert that the object being read has the type <code class="language-java">Album</code> or <code class="language-java">Book</code>. We can only be certain that it has type <code class="language-java">Object</code>, since all classes inherit from <code class="language-java">Object</code>.</p>
 <p>While <code class="language-java">Object</code> is the only type that can be read from albums, <code class="language-java">Album</code> is the only type that can be added. The reason is that only an instance of <code class="language-java">Album</code> can also be treated as an instance of <code class="language-java">Book</code> and <code class="language-java">Object</code>. If we tried to add an instance of <code class="language-java">Book</code>, this instance would be treated as <code class="language-java">Album</code> in the future. The compiler prevents such errors by issuing a compiler-time warning. </p>
 <h5 id="get-and-put-principle">Get and Put Principle</h5>
 <p>To decide whether extends or super should be used, it is worth remembering the Get and Put principle:</p>
@@ -99,13 +99,19 @@ public void lowerBoundedMethod(List&lt;? super Album&gt; albums) {
 <p>Use Unbounded Wildcards (simply &lt;?&gt;) when you both get and put values (i.e. when you need to use both getters and setters).</p>
 </li>
 </ul>
-<p></p><div class="alert alert-primary">Note that putting values may require an extra step to avoid errors — we discuss this in the following section.</div><p></p>
+<p> </p>
+<p></p><div class="alert alert-primary">Note that putting values may require an extra step to avoid errors — we discuss this in the following section.</div>
+<p> </p>
 <p>To memorize this principle, you can also use PECS: Producer Extends, Consumer Super. This means that if you get a value from a generic class, method, or any other object that produces what you need, you use extends. If you put or set a value into a generic class, method, or any other object that consumes what you put in, you use super.</p>
-<p>Remember that it is not possible to put anything into a type declared with the <code class="language-java">extends</code> wildcard except for the null value, which can represent any reference type. Similarly, it is not possible to retrieve anything from a type declared with super wildcard except for an instance of <code class="language-java">Object</code>, the parent of every reference type.</p>
-<p></p><div class="alert alert-warning"> You cannot use both a lower and an upper bound in wildcards or type bounds.</div><p></p>
-<p>Note that a class or interface used with the <code class="language-java">extends</code> or <code class="language-java">super</code> keyword is itself included in the inheritance. For example, <code class="language-java">Box&lt;T&gt;</code> is compatible and covariant with <code class="language-java">Box&lt;? extends T&gt; or Box&lt;? super T&gt;</code>.</p>
+<p>Remember that it is not possible to put anything into a type declared with the <code class="language-java">extends</code> wildcard except for the null value, which can represent any reference type. Similarly, it is not possible to retrieve anything from a type declared with the super wildcard except for an instance of <code class="language-java">Object</code>, the parent of every reference type.</p>
+<p> </p>
+<p></p><div class="alert alert-warning"> You cannot use both a lower and an upper bound in wildcards or type bounds.</div>
+<p> </p>
+<p>Note that a class or interface used with the <code class="language-java">extends</code> or <code class="language-java">super</code> keyword is itself included in the inheritance. For example, <code class="language-java">Box&lt;T&gt;</code> is compatible and covariant with <code class="language-java">Box&lt;? extends T&gt;</code> and <code class="language-java">Box&lt;? super T&gt;</code>.</p>
 <p>Also note that the unbounded wildcard <code class="language-java">?</code> is equivalent to <code class="language-java">? extends Object</code>.</p>
-<p></p><div class="alert alert-primary"> Remember that the purpose of inheritance prohibition in generics is to prevent run-time errors; otherwise, generics would lose their type safety.</div><p></p>
+<p> </p>
+<p></p><div class="alert alert-primary"> Remember that the purpose of inheritance prohibition in generics is to prevent run-time errors; otherwise, generics would lose their type safety.</div>
+<p> </p>
 <h5 id="wildcard-capture">Wildcard capture</h5>
 <p>Let's consider the example:</p>
 <pre><code class="language-java">public static void reverse(List&lt;?&gt; list) {
@@ -127,4 +133,4 @@ private static &lt;T&gt; void reverseCaptured(List&lt;T&gt; list) {
 }</code></pre>
 <p>Here we introduced a helper method <code class="language-java">reverseCaptured</code> which has a parameter of a certain type <code class="language-java">T</code> for all elements of a list. The method is error-free because it is merely a generic method; it does not face any restrictions due to wildcards.</p>
 <h5 id="conclusion">Conclusion</h5>
-<p>Wildcards are a convenient and safe way of implementing an equivalent of inheritance in Generics. They are declared with the <code class="language-java">&lt;?&gt;</code> symbol and are widely used with upper or lower bounds to restrict type parameters.</p></body></html>
+<p>Wildcards are a convenient and safe way of implementing an equivalent of inheritance in Generics. They are declared with the <code class="language-java">&lt;?&gt;</code> symbol and are widely used with upper or lower bounds to restrict type parameters.</p>

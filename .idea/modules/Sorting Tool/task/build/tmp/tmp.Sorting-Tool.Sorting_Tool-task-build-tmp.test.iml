@@ -71,7 +71,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Sorting-Tool.Sorting_Tool-task-build-tmp.main" />
+    <orderEntry type="module" module-name="tmp.Sorting-Tool.Sorting_Tool-task-build-tmp.main" />
     <orderEntry type="module" module-name="Sorting-Tool.util.main" />
     <orderEntry type="module" module-name="Sorting-Tool.util.test" production-on-test="" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10" level="project" />

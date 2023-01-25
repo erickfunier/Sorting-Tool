@@ -1,5 +1,6 @@
 package sorting;
 
+import java.io.*;
 import java.util.*;
 
 public class Main {
@@ -23,21 +24,85 @@ public class Main {
         return sortedByValues;
     }
 
+    private static void printMessage(FileWriter writer, String msg) {
+        if (writer != null) {
+            try {
+                writer.append(msg);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            System.out.print(msg);
+        }
+    }
+
     public static void main(final String[] args) {
         String dataType = "long";
         String sortingType = "natural";
+        String inputFilePath = "";
+        String outputFilePath = "";
 
         if (args.length > 0) {
             for (int i = 0; i < args.length; i++) {
-                if (args[i].equals("-dataType"))
-                    dataType = args[i + 1];
+                if (args[i].equals("-dataType")) {
+                    if (args.length > i + 1 && !args[i + 1].startsWith("-")) {
+                        dataType = args[i + 1];
+                    } else {
+                        System.out.println("No data type defined!");
+                    }
+                }
+
                 if (args[i].equals("-sortingType")) {
-                    sortingType = args[i + 1];
+                    if (args.length > i + 1 && !args[i + 1].startsWith("-")) {
+                        sortingType = args[i + 1];
+                    } else {
+                        System.out.println("No sorting type defined!");
+                    }
+                }
+
+                if (args[i].equals("-inputFile")) {
+                    if (args.length > i + 1 && !args[i + 1].startsWith("-")) {
+                        inputFilePath = args[i + 1];
+                    } else {
+                        System.out.println("No input file defined!");
+                    }
+                }
+
+                if (args[i].equals("-outputFile")) {
+                    if (args.length > i + 1 && !args[i + 1].startsWith("-")) {
+                        outputFilePath = args[i + 1];
+                    } else {
+                        System.out.println("No output file defined!");
+                    }
                 }
             }
         }
 
-        Scanner scanner = new Scanner(System.in);
+        File inputFile;
+        File outputFile;
+        Scanner scanner;
+        FileWriter writer = null;
+
+        if (!inputFilePath.isEmpty()) {
+            inputFile = new File(inputFilePath);
+            try {
+                scanner = new Scanner(inputFile);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            scanner = new Scanner(System.in);
+        }
+
+        if (!outputFilePath.isEmpty()) {
+            outputFile = new File(outputFilePath);
+            try {
+                writer = new FileWriter(outputFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
 
         switch (dataType) {
             case "long" -> {
@@ -45,13 +110,16 @@ public class Main {
                 while (scanner.hasNextLong()) {
                     nums.add(scanner.nextLong());
                 }
-                System.out.println("Total numbers: " + nums.size() + ".");
+                printMessage(writer, "Total numbers: " + nums.size() + ".\n");
+                //System.out.println("Total numbers: " + nums.size() + ".");
                 Collections.sort(nums);
 
                 if (sortingType.equals("natural")) {
-                    System.out.print("Sorted data:");
+                    printMessage(writer, "Sorted data:");
+                    //System.out.print("Sorted data:");
                     for (Long num : nums)
-                        System.out.printf(" %d", num);
+                        printMessage(writer, " " + num);
+                        //System.out.printf(" %d", num);
 
                 } else {
                     TreeMap<Integer, Long> frequencies = new TreeMap<>();
@@ -72,7 +140,8 @@ public class Main {
                         long freq = integerLongEntry.getValue();
                         long occurs = nums.stream().filter(n -> n == temp).count();
 
-                        System.out.println(temp + ": " + occurs + " time(s), " + freq + "%");
+                        printMessage(writer, temp + ": " + occurs + " time(s), " + freq + "%\n");
+                        //System.out.println(temp + ": " + occurs + " time(s), " + freq + "%");
                     }
                 }
             }
@@ -81,13 +150,16 @@ public class Main {
                 while (scanner.hasNextLine()) {
                     lines.add(scanner.nextLine());
                 }
-                System.out.println("Total lines: " + lines.size() + ".");
+                printMessage(writer, "Total lines: " + lines.size() + ".\n");
+                //System.out.println("Total lines: " + lines.size() + ".");
                 Collections.sort(lines);
 
                 if (sortingType.equals("natural")) {
-                    System.out.print("Sorted data:");
+                    printMessage(writer, "Sorted data:");
+                    //System.out.print("Sorted data:");
                     for (String line : lines)
-                        System.out.printf(" %s", line);
+                        printMessage(writer, " " + line);
+                        //System.out.printf(" %s", line);
 
                 } else {
                     TreeMap<Integer, Long> frequencies = new TreeMap<>();
@@ -108,7 +180,8 @@ public class Main {
                         long freq = integerLongEntry.getValue();
                         long occurs = lines.stream().filter(n -> Objects.equals(n, temp)).count();
 
-                        System.out.println(temp + ": " + occurs + " time(s), " + freq + "%");
+                        printMessage(writer, temp + ": " + occurs + " time(s), " + freq + "%\n");
+                        //System.out.println(temp + ": " + occurs + " time(s), " + freq + "%");
                     }
                 }
             }
@@ -117,13 +190,18 @@ public class Main {
                 while (scanner.hasNext()) {
                     words.add(scanner.next());
                 }
-                System.out.println("Total words: " + words.size() + ".");
+                printMessage(writer, "Total words: " + words.size() + ".\n");
+                //System.out.println("Total words: " + words.size() + ".");
                 Collections.sort(words);
 
                 if (sortingType.equals("natural")) {
-                    System.out.print("Sorted data:");
-                    for (String word : words)
-                        System.out.printf(" %s", word);
+                    printMessage(writer, "Sorted data:");
+                    //System.out.print("Sorted data:");
+                    for (String word : words) {
+                        printMessage(writer, " " + word);
+                        //System.out.printf(" %s", word);
+                    }
+
 
                 } else {
                     TreeMap<Integer, Long> frequencies = new TreeMap<>();
@@ -144,10 +222,13 @@ public class Main {
                         long freq = integerLongEntry.getValue();
                         long occurs = words.stream().filter(n -> Objects.equals(n, temp)).count();
 
-                        System.out.println(temp + ": " + occurs + " time(s), " + freq + "%");
+                        printMessage(writer, temp + ": " + occurs + " time(s), " + freq + "%\n");
+                        //System.out.println(temp + ": " + occurs + " time(s), " + freq + "%");
                     }
                 }
             }
         }
+
+        scanner.close();
     }
 }
